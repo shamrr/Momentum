@@ -3,6 +3,9 @@ const HTMLDate = document.querySelector('.date');
 const HTMLGreeting = document.querySelector('.greeting')
 const HTMLName = document.querySelector('.name')
 HTMLName.placeholder = '[Enter name]';
+const HTMLBody = document.querySelector('body');
+const HTMLSlidePrev = document.querySelector('.slide-prev')
+const HTMLSlideNext = document.querySelector('.slide-next')
 
 //Функция вывода времени
 function showTime() {
@@ -81,3 +84,59 @@ function getLocalStorage() {
     }
 }
 window.addEventListener('load', getLocalStorage);
+
+let rand;
+//Функция получения рандомного числа в промежутке
+function getRandomNum(min, max) {
+    rand = String(Math.floor(min + Math.random() * (max + 1 - min)));
+    if(rand.length === 1){
+        return rand.padStart(2, "0");
+    }
+    return rand;
+}
+
+//Функция изменния фона в зависимости от времени суток
+function setBg(timeOfDay, bgNum) {
+    console.log(bgNum);
+    HTMLBody.style.backgroundImage = `url(https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg)`;
+}
+
+setBg(getTimeOfDay(), getRandomNum(1,20));
+
+//Слайдер вперед
+function getSlideNext() {
+    if(rand > 0 && rand < 20){
+        rand = String(rand);
+        if(rand.length == 1){
+            setBg(getTimeOfDay(), String((++rand)).padStart(2, "0"));
+        } else{
+            setBg(getTimeOfDay(), ++rand);
+        }
+    } else {
+        rand = '0';
+        rand = String(rand);
+        if(rand.length == 1){
+            setBg(getTimeOfDay(), String((++rand)).padStart(2, "0"));
+        } else{
+            setBg(getTimeOfDay(), ++rand);
+        }
+    }
+}
+HTMLSlideNext.addEventListener('click', getSlideNext);
+
+// Слайдер назад
+function getSlidePrev() {
+    if(rand > 0){
+        setBg(getTimeOfDay(), String((--rand)).padStart(2, "0"));
+    } else {
+        rand = '21';
+        rand = String(rand);
+        if(rand.length == 1){
+            setBg(getTimeOfDay(), String((--rand)).padStart(2, "0"));
+        } else{
+            setBg(getTimeOfDay(), --rand);
+        }
+    }
+}
+HTMLSlidePrev.addEventListener('click', getSlidePrev);
+
